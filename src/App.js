@@ -1,4 +1,5 @@
 import VideoPlayer from "./components/VideoPlayer";
+
 function App() {
   return (
     <div className="">
