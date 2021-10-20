@@ -11,7 +11,6 @@ function SelectionPage() {
     const [selectVideo, setVideoPlayer] = useState(false)
     const [selectStream, setStreamPlayer] = useState(false)
 
-
     const onButtonClick = () => {
         setVideoPlayer(!selectVideo)
     }
