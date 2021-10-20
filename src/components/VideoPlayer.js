@@ -7,6 +7,7 @@ import Clip from './Clip';
 import Player from './Player';
 
 const VideoPlayer = ({playBackId}) => {
+
     const [showClipping, setShowClipping] = useState(false)
 
     const videoRef = useRef(null)
@@ -14,37 +15,30 @@ const VideoPlayer = ({playBackId}) => {
     const src = 'https://stream.mux.com/' + playBackId + '.m3u8'
     // const assetID = "QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"
     useEffect(() => {
-        const video = videoRef.current
-        if (!video) return
-
-        video.controls = true
-        let hls
-
-        if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // This will run in safari, where HLS is supported natively
-            video.src = src
-        } else if (Hls.isSupported()) {
+        let hls;
+        if (videoRef.current) {
+          const video = videoRef.current;
+    
+          if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            // Some browers (safari and ie edge) support HLS natively
+            video.src = src;
+          } else if (Hls.isSupported()) {
             // This will run in all other modern browsers
-            hls = new Hls()
-            hls.loadSource(src)
-            hls.attachMedia(video)
-        } else {
-            console.error(
-                'This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API'
-            )
+            hls = new Hls();
+            hls.loadSource(src);
+            hls.attachMedia(video);
+          } else {
+            console.error("This is a legacy browser that doesn't support MSE");
+          }
         }
-
+    
         return () => {
-            if (hls) {
-                hls.destroy()
-            }
-        }
-    })//, [src, videoRef]) //if you have this then this code will only run if those variables change, 
-                        //remove this to allow the video player to reset when you leave clip 
+          if (hls) {
+            hls.destroy();
+          }
+        };
+      });//, [videoRef]);
         
-    // async function createClip() {
-    //     const response = await fetch()
-    // }
     const onButtonClick = () => {
         setShowClipping(!showClipping)
     }

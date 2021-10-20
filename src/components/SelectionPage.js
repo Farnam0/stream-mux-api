@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Container } from 'react-bootstrap'
 import { Row } from 'react-bootstrap'
 
 import VideoPlayer from './VideoPlayer'
 import Button from './Button'
+import StreamPlayer from './Stream/StreamPlayer'
 
 function SelectionPage() {
 
@@ -15,7 +16,8 @@ function SelectionPage() {
         setVideoPlayer(!selectVideo)
     }
 
-    const onButtonClick2 = () => {
+    const onButtonClick2 = (e) => {
+        e.preventDefault()
         setStreamPlayer(!selectStream)
     }
 
@@ -32,7 +34,7 @@ function SelectionPage() {
     {
         return (
             <div>
-                <VideoPlayer playBackId={"MCBkK8L102Z6Z41buCEAKuyt8GNJESo6RRIkTU8Hcnk00"} />
+                <StreamPlayer />
             </div>
         )
     }
