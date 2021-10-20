@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import Hls from 'hls.js'
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import { Row } from 'react-bootstrap'
 
-import Button from './Button'
 import Clip from './Clip';
+import Player from './Player';
 
 const VideoPlayer = () => {
+    const [showClipping, setShowClipping] = useState(false)
+
     const videoRef = useRef(null)
     const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU.m3u8" //stream token
     // const assetID = "QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"
@@ -38,14 +38,13 @@ const VideoPlayer = () => {
                 hls.destroy()
             }
         }
-    }, [src, videoRef])
-
-    const [showClipping, setShowClipping] = useState(false)
-
+    }, [src, videoRef]) //if you have this then this code will only run if those variables change, 
+                        //remove this to allow the video player to reset when you leave clip 
+        
     // async function createClip() {
     //     const response = await fetch()
     // }
-    const onButtonClick = (e) => {
+    const onButtonClick = () => {
         setShowClipping(!showClipping)
     }
 
@@ -58,19 +57,7 @@ const VideoPlayer = () => {
     } else {
         return (
             <>
-                <Container>
-                    <Row>
-                        <div className="text-center pt-5">
-                            <video controls ref={videoRef} style={{ width: "100%", maxWidth: "1000px" }} />
-                        </div>
-                    </Row>
-                    <Row>
-                        <div className="text-center">
-                            <Button color="#FE6C59" hoverColor="#F08C99" text="Clip" onClick={onButtonClick} />
-                        </div>
-                    </Row>
-
-                </Container>
+                <Player onButtonClick={onButtonClick} videoRef={videoRef} buttonText={"clip"}/>
             </>
         )
     }

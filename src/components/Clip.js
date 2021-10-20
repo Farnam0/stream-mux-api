@@ -1,9 +1,8 @@
 import { useEffect, useRef } from 'react'
 import Hls from 'hls.js'
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import { Row } from 'react-bootstrap'
-import Button from './Button'
+
+import Player from './Player'
 
 const Clip = ( { onButtonClick } ) => {
 
@@ -37,21 +36,11 @@ const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU
     }
   }, [src, videoRef])
 
+  console.log("her1")
     return (
       <>
-      <Container>
-          <Row>
-              <div className="text-center pt-5">
-                  <video controls ref={videoRef} style={{ width: "100%", maxWidth: "1500px" }} />
-              </div>
-          </Row>
-          <Row>
-              <div className="text-center">
-                  <Button color="#FE6C59" hoverColor="#F08C99" text="Save Clip" onClick={onButtonClick} />
-              </div>
-          </Row>
-      </Container>
-  </>   
+        <Player onButtonClick={onButtonClick} videoRef={videoRef} buttonText={"Save Clip"}/>
+      </>
     )
 }
 
