@@ -16,7 +16,7 @@ const Button = ({ color, hoverColor, text, onClick }) => {
               button {
                   text-align: center;
                 height: 4em;
-                width: 10%;
+                width: 30%;
                 padding: 1.5em auto;
                 margin: 1em auto;
                 background-color: ${color};

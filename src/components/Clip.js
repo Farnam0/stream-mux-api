@@ -36,7 +36,6 @@ const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU
     }
   }, [src, videoRef])
 
-  console.log("her1")
     return (
       <>
         <Player onButtonClick={onButtonClick} videoRef={videoRef} buttonText={"Save Clip"}/>

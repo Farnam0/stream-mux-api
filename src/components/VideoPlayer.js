@@ -6,11 +6,12 @@ import React from 'react'
 import Clip from './Clip';
 import Player from './Player';
 
-const VideoPlayer = () => {
+const VideoPlayer = ({playBackId}) => {
     const [showClipping, setShowClipping] = useState(false)
 
     const videoRef = useRef(null)
-    const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU.m3u8" //stream token
+    //const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU.m3u8" //stream token
+    const src = 'https://stream.mux.com/' + playBackId + '.m3u8'
     // const assetID = "QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"
     useEffect(() => {
         const video = videoRef.current
@@ -38,7 +39,7 @@ const VideoPlayer = () => {
                 hls.destroy()
             }
         }
-    }, [src, videoRef]) //if you have this then this code will only run if those variables change, 
+    })//, [src, videoRef]) //if you have this then this code will only run if those variables change, 
                         //remove this to allow the video player to reset when you leave clip 
         
     // async function createClip() {
