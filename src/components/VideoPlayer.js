@@ -3,9 +3,12 @@ import 'bootstrap/dist/css/bootstrap.css';
 import Hls from 'hls.js'
 import React from 'react'
 
-import Player from './Player';
+import Mux from './Player';
 import Button from './Button';
 import ClipMenu from './ClipMenu';
+import { Video } from '@mux/mux-node';
+
+const { Video } = new Mux("4a875045-e081-416d-bfb6-193498df9553", "9s1nVYdsRPapK/J07idbqYhYO3RJ5lDGgtd7fDg/SDY/hEeLaERwH1gw0Qtkg+UMCeAy6r5eXjY");
 
 
 const VideoPlayer = ({ AssetId, PlaybackId }) => {
@@ -57,8 +60,19 @@ const VideoPlayer = ({ AssetId, PlaybackId }) => {
         console.log(endTime);
     }
 
+    async function SaveClip() {
+        Video.ClipMenu.create({
+
+        })
+        return await Video.LiveStreams.create({
+            playback_policy: 'public',
+            new_asset_settings: { playback_policy: 'public' }
+        })
+    }
+
     const saveClip = () => {
         var reqBody = {
+            method: 'POST',
             input: [{
                 url: "mux://assets/" + assetId,
                 start_time: startTime,
