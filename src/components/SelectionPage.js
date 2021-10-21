@@ -24,7 +24,10 @@ function SelectionPage() {
     {
         return (
             <div>
-                <VideoPlayer playBackId={"ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU"} />
+                <VideoPlayer 
+                    PlaybackId={"ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU"} 
+                    AssetId={"QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"}
+                />
             </div>
         )
     }
