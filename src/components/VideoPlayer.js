@@ -57,8 +57,16 @@ const VideoPlayer = ({ AssetId, PlaybackId }) => {
         console.log(endTime);
     }
 
+    // async function SaveClip() {
+    //     return await Video.LiveStreams.create({
+    //         playback_policy: 'public',
+    //         new_asset_settings: { playback_policy: 'public' }
+    //     })
+    // }
+
     const saveClip = () => {
         var reqBody = {
+            method: 'POST',
             input: [{
                 url: "mux://assets/" + assetId,
                 start_time: startTime,
