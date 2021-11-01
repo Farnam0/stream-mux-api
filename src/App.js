@@ -1,9 +1,9 @@
-import VideoPlayer from "./components/VideoPlayer";
+import SelectionPage from "./components/SelectionPage";
 
 function App() {
   return (
     <div className="">
-      <VideoPlayer />
+      <SelectionPage />
     </div>
   );
 }

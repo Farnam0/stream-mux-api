@@ -2,78 +2,110 @@ import { useEffect, useRef, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
 import Hls from 'hls.js'
 import React from 'react'
-import { Container } from 'react-bootstrap'
-import { Row } from 'react-bootstrap'
 
-import Button from './Button'
-import Clip from './Clip';
+import Player from './Player';
+import Button from './Button';
+import ClipMenu from './ClipMenu';
 
-const VideoPlayer = () => {
-    const videoRef = useRef(null)
-    const src = "https://stream.mux.com/ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU.m3u8" //stream token
-    // const assetID = "QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"
-    useEffect(() => {
-        const video = videoRef.current
-        if (!video) return
 
-        video.controls = true
-        let hls
+const VideoPlayer = ({ AssetId, PlaybackId }) => {
 
-        if (video.canPlayType('application/vnd.apple.mpegurl')) {
-            // This will run in safari, where HLS is supported natively
-            video.src = src
-        } else if (Hls.isSupported()) {
-            // This will run in all other modern browsers
-            hls = new Hls()
-            hls.loadSource(src)
-            hls.attachMedia(video)
-        } else {
-            console.error(
-                'This is an old browser that does not support MSE https://developer.mozilla.org/en-US/docs/Web/API/Media_Source_Extensions_API'
-            )
-        }
+	const [showClipping, setShowClipping] = useState(false);
+	const [startTime, setStartTime] = useState(0.0);
+    const [endTime, setEndTime] = useState(0.0);
+	const [playBackId, setPlayBackId] = useState(PlaybackId);
+	const [assetId, setAssetId] = useState(AssetId);
 
-        return () => {
-            if (hls) {
-                hls.destroy()
-            }
-        }
-    }, [src, videoRef])
+	const videoRef = useRef(null)
+	const src = 'https://stream.mux.com/' + playBackId + '.m3u8'
+	useEffect(() => {
+		let hls;
+		if (videoRef.current) {
+			const video = videoRef.current;
 
-    const [showClipping, setShowClipping] = useState(false)
+			if (video.canPlayType("application/vnd.apple.mpegurl")) {
+				// Some browers (safari and ie edge) support HLS natively
+				video.src = src;
+			} else if (Hls.isSupported()) {
+				// This will run in all other modern browsers
+				hls = new Hls();
+				hls.loadSource(src);
+				hls.attachMedia(video);
+			} else {
+				console.error("This is a legacy browser that doesn't support MSE");
+			}
+		}
 
-    // async function createClip() {
-    //     const response = await fetch()
+		return () => {
+			if (hls) {
+				hls.destroy();
+			}
+		};
+	});
+
+	const onButtonClick = () => {
+		setShowClipping(!showClipping)
+	}
+
+	const onStartChange = (event) => {
+        setStartTime(event.target.value);
+        console.log(startTime);
+    }
+
+    const onEndChange = (event) => {
+        setEndTime(event.target.value);
+        console.log(endTime);
+    }
+
+    // async function SaveClip() {
+    //     return await Video.LiveStreams.create({
+    //         playback_policy: 'public',
+    //         new_asset_settings: { playback_policy: 'public' }
+    //     })
     // }
-    const onButtonClick = (e) => {
-        setShowClipping(!showClipping)
+
+    const saveClip = () => {
+        var reqBody = {
+            method: 'POST',
+            input: [{
+                url: "mux://assets/" + assetId,
+                start_time: startTime,
+                end_time: endTime
+            }],
+            playback_policy: [
+                "public"
+            ]
+        }
+        fetch('https://api.mux.com/video/v1/assets', reqBody)
+            .then(response => response.json())
+            .then(body => setPlayBackId(body.playback_ids[0].id))
+            .catch(err => console.log(err));
+        setShowClipping(true);
     }
 
-    if (showClipping) {
-        return (
-            <>
-                <Clip onButtonClick={onButtonClick}/>
-            </>
-        )
-    } else {
-        return (
-            <>
-                <Container>
-                    <Row>
-                        <div className="text-center pt-5">
-                            <video controls ref={videoRef} style={{ width: "100%", maxWidth: "1000px" }} />
-                        </div>
-                    </Row>
-                    <Row>
-                        <div className="text-center">
-                            <Button color="#FE6C59" hoverColor="#F08C99" text="Clip" onClick={onButtonClick} />
-                        </div>
-                    </Row>
-
-                </Container>
-            </>
-        )
-    }
+	if (showClipping) {
+		return (
+			<>
+				<>
+					<Player videoRef={videoRef} />
+					<ClipMenu
+						onStartChange={onStartChange}
+						onEndChange={onEndChange}
+						saveClip={saveClip}
+					/>
+				</>
+			</>
+		)
+	} else {
+		return (
+			<>
+				<Player videoRef={videoRef} />
+				<div className="text-center">
+					<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onButtonClick} />
+				</div>
+			</>
+		)
+	}
 
 }
 
