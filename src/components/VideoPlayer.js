@@ -8,16 +8,15 @@ import Button from './Button';
 import ClipMenu from './ClipMenu';
 
 
-const VideoPlayer = ({ AssetId, PlaybackId }) => {
+const VideoPlayer = ({ PlaybackId }) => {
 
 	const [showClipping, setShowClipping] = useState(false);
-	const [startTime, setStartTime] = useState(0.0);
+    const [startTime, setStartTime] = useState(0.0);
     const [endTime, setEndTime] = useState(0.0);
-	const [playBackId, setPlayBackId] = useState(PlaybackId);
-	const [assetId, setAssetId] = useState(AssetId);
 
 	const videoRef = useRef(null)
-	const src = 'https://stream.mux.com/' + playBackId + '.m3u8'
+	const src = 'https://stream.mux.com/' + PlaybackId + '.m3u8'
+
 	useEffect(() => {
 		let hls;
 		if (videoRef.current) {
@@ -40,60 +39,22 @@ const VideoPlayer = ({ AssetId, PlaybackId }) => {
 			if (hls) {
 				hls.destroy();
 			}
-		};
-	});
+		}
+	})
 
-	const onButtonClick = () => {
-		setShowClipping(!showClipping)
-	}
-
-	const onStartChange = (event) => {
-        setStartTime(event.target.value);
-        console.log(startTime);
-    }
-
-    const onEndChange = (event) => {
-        setEndTime(event.target.value);
-        console.log(endTime);
-    }
-
-    // async function SaveClip() {
-    //     return await Video.LiveStreams.create({
-    //         playback_policy: 'public',
-    //         new_asset_settings: { playback_policy: 'public' }
-    //     })
-    // }
-
-    const saveClip = () => {
-        var reqBody = {
-            method: 'POST',
-            input: [{
-                url: "mux://assets/" + assetId,
-                start_time: startTime,
-                end_time: endTime
-            }],
-            playback_policy: [
-                "public"
-            ]
-        }
-        fetch('https://api.mux.com/video/v1/assets', reqBody)
-            .then(response => response.json())
-            .then(body => setPlayBackId(body.playback_ids[0].id))
-            .catch(err => console.log(err));
-        setShowClipping(true);
+	const onClipClick = () => {
+        setShowClipping(!showClipping)
     }
 
 	if (showClipping) {
 		return (
 			<>
-				<>
-					<Player videoRef={videoRef} />
-					<ClipMenu
-						onStartChange={onStartChange}
-						onEndChange={onEndChange}
-						saveClip={saveClip}
-					/>
-				</>
+				<Player videoRef={videoRef} />
+				<ClipMenu
+					onStartChange={(event) => {setStartTime(event.target.value)}}
+					onEndChange={(event) => {setEndTime(event.target.value)}}
+					//saveClip={saveClip}
+				/>
 			</>
 		)
 	} else {
@@ -101,7 +62,7 @@ const VideoPlayer = ({ AssetId, PlaybackId }) => {
 			<>
 				<Player videoRef={videoRef} />
 				<div className="text-center">
-					<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onButtonClick} />
+					<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onClipClick} />
 				</div>
 			</>
 		)
