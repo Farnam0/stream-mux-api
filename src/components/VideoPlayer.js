@@ -6,7 +6,7 @@ import React from 'react'
 import Player from './Player';
 import Button from './Button';
 import ClipMenu from './ClipMenu';
-
+import CreateAClip from './Api/CreateAClip';
 
 const VideoPlayer = ({ PlaybackId }) => {
 
@@ -46,6 +46,13 @@ const VideoPlayer = ({ PlaybackId }) => {
         setShowClipping(!showClipping)
     }
 
+	const OnSaveClip = () => {
+		const result = CreateAClip();
+		result.then(response => {
+			console.log(response)
+		})
+    }
+
 	if (showClipping) {
 		return (
 			<>
@@ -53,7 +60,7 @@ const VideoPlayer = ({ PlaybackId }) => {
 				<ClipMenu
 					onStartChange={(event) => {setStartTime(event.target.value)}}
 					onEndChange={(event) => {setEndTime(event.target.value)}}
-					//saveClip={saveClip}
+					saveClip={OnSaveClip}
 				/>
 			</>
 		)
@@ -71,6 +78,3 @@ const VideoPlayer = ({ PlaybackId }) => {
 }
 
 export default VideoPlayer
-
-
-
