@@ -10,6 +10,7 @@ function SelectionPage() {
 
     const [selectVideo, setVideoPlayer] = useState(false)
     const [selectStream, setStreamPlayer] = useState(false)
+    const [assetId, setAssetId] = useState('');
 
     const onButtonClick = () => {
         setVideoPlayer(!selectVideo)
@@ -25,8 +26,7 @@ function SelectionPage() {
         return (
             <div>
                 <VideoPlayer 
-                    PlaybackId={"ieOreEoe28XlgtpNMPcBZcLELX9CNsAMj6g3d02NU7GU"} 
-                    AssetId={"QIURDS36qh1sIBp36LbqNE01RslXHRxVX8NG01br9vSJw"}
+                    AssetId={assetId}
                 />
             </div>
         )
@@ -46,6 +46,7 @@ function SelectionPage() {
             <Row>
                 <div className="text-center">
                     <Button color="#FE6C59" hoverColor="#F08C99" text="Video Player" onClick={onButtonClick} />
+                    <input type="text" name="startTime" placeholder="Asset Id" onChange={(event) => {setAssetId(event.target.value)}} />
                 </div>
             </Row>
             <Row>
