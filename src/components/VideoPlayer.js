@@ -4,8 +4,8 @@ import Hls from 'hls.js'
 import React from 'react'
 
 import Player from './Player';
-import Button from './Button';
-import ClipMenu from './ClipMenu';
+import Button from './common/Button';
+import ClipMenu from './common/ClipMenu';
 import CreateAClip from './Api/CreateAClip';
 import GetPlayBackId from './Api/GetPlayBackId';
 import MessageBox from './Stream/MessageBox';
