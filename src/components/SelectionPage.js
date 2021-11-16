@@ -1,61 +1,69 @@
-import { useState } from 'react'
-import { Container } from 'react-bootstrap'
-import { Row } from 'react-bootstrap'
+import React, { Component } from 'react';
+import { Container } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 
-import VideoPlayer from './VideoPlayer'
-import Button from './Button'
-import StreamPlayer from './Stream/StreamPlayer'
+import VideoPlayer from './VideoPlayer';
+import Button from './Button';
+import StreamPlayer from './Stream/StreamPlayer';
 
-function SelectionPage() {
-
-    const [selectVideo, setVideoPlayer] = useState(false)
-    const [selectStream, setStreamPlayer] = useState(false)
-    const [assetId, setAssetId] = useState('');
-
-    const onButtonClick = () => {
-        setVideoPlayer(!selectVideo)
+class SelectionPage extends Component {
+    constructor() {
+        super()
+        this.state = {
+            page: "",
+            assetId: ""
+        }
     }
 
-    const onButtonClick2 = (e) => {
-        e.preventDefault()
-        setStreamPlayer(!selectStream)
-    }
+    changePage = (nextPage) => {
+        this.setState({
+            page: nextPage,
+        });
+    };
 
-    if(selectVideo)
-    {
-        return (
-            <div>
-                <VideoPlayer 
-                    AssetId={assetId}
-                />
-            </div>
-        )
-    }
+    onInputChange = (event) => {
+        this.setState({assetId: event.target.value})
+    } 
 
-    if(selectStream)
-    {
-        return (
-            <div>
-                <StreamPlayer />
-            </div>
-        )
-    }
+    render() {
 
-    return (
-        <Container>
-            <Row>
-                <div className="text-center">
-                    <Button color="#FE6C59" hoverColor="#F08C99" text="Video Player" onClick={onButtonClick} />
-                    <input type="text" name="startTime" placeholder="Asset Id" onChange={(event) => {setAssetId(event.target.value)}} />
-                </div>
-            </Row>
-            <Row>
-                <div className="text-center">
-                    <Button color="#FE6C59" hoverColor="#F08C99" text="Stream Player" onClick={onButtonClick2} />
-                </div>
-            </Row>
-        </Container>
-    )
+        let {page} = this.state
+
+        switch(page) {
+            case "":
+                return (
+                    <Container>
+                        <Row>
+                            <div className="text-center">
+                                <Button color="#FE6C59" hoverColor="#F08C99" text="Video Player" onClick={this.changePage("video")} />
+                                <input type="text" name="startTime" placeholder="Asset Id" onChange={this.onInputChange} />
+                            </div>
+                        </Row>
+                        <Row>
+                            <div className="text-center">
+                                <Button color="#FE6C59" hoverColor="#F08C99" text="Stream Player" onClick={this.changePage("stream")} />
+                            </div>
+                        </Row>
+                    </Container>
+                );
+
+            case "video":
+                return (
+                    <div>
+                        <VideoPlayer 
+                            AssetId={this.state}
+                        />
+                    </div>
+                )
+
+            case "stream":
+                return (
+                    <div>
+                        <StreamPlayer />
+                    </div>
+                )
+        }
+    }
 }
 
-export default SelectionPage
+export default SelectionPage;
