@@ -82,8 +82,14 @@ const VideoPlayer = ({ playbackId, AssetId }) => {
 			<>
 				<Player videoRef={videoRef} />
 				<ClipMenu
-					onStartChange={(event) => {setStartTime(event.target.value)}}
-					onEndChange={(event) => {setEndTime(event.target.value)}}
+					onStartChange={(startTime) => {
+						console.log(startTime);
+						setStartTime(startTime);
+					}}
+					onEndChange={(endTime) => {
+						console.log(endTime);
+						setEndTime(endTime)
+					}}
 					saveClip={OnSaveClip}
 				/>
 			</>

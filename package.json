@@ -11,6 +11,8 @@
     "boostrap": "^2.0.0",
     "bootstrap": "^5.1.3",
     "hls.js": "^1.0.12-0.canary.7993",
+    "multi-range-slider-react": "^1.0.5",
+    "rc-slider": "^9.7.4",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.1",
     "react-dom": "^17.0.2",
