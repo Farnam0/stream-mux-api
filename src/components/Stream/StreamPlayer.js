@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import GetLiveStream from '../Api/GetLiveStream';
 import StreamPlay from './StreamPlay';
 
-function StreamPlayer() {
+function StreamPlayer({ BackButton }) {
     const [streamKey, setStreamKey] = useState(0);
     const [playBackId, setPlayBackId] = useState(0);
     const [callVideoPlayer, setVideoPlayer] = useState(false);
@@ -23,7 +23,7 @@ function StreamPlayer() {
     
     return (
         <>
-            <StreamPlay streamKey={streamKey} playBackId={playBackId} onButtonClick={onButtonClick} />
+            <StreamPlay streamKey={streamKey} playBackId={playBackId} onButtonClick={onButtonClick} onBackButtonClick={BackButton} />
         </>
     )
 }

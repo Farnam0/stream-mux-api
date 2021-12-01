@@ -21,6 +21,10 @@ function SelectionPage() {
         setStreamPlayer(!selectStream)
     }
 
+    const backVideo = () => {
+
+    }
+    
     if(selectVideo)
     {
         return (
@@ -28,7 +32,11 @@ function SelectionPage() {
                 <VideoPlayer 
                     AssetId={assetId}
                 />
+                <div className="text-center">
+                    <Button color="#FE6C59" hoverColor="#F08C99" text={"Back"} onClick={onButtonClick} />
+                </div>
             </div>
+            
         )
     }
 
@@ -37,6 +45,9 @@ function SelectionPage() {
         return (
             <div>
                 <StreamPlayer />
+                <div className="text-center">
+                    <Button color="#FE6C59" hoverColor="#F08C99" text={"Back"} onClick={onButtonClick2} />
+                </div>
             </div>
         )
     }

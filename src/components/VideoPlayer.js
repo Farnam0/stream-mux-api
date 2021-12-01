@@ -10,7 +10,7 @@ import CreateAClip from './Api/CreateAClip';
 import GetPlayBackId from './Api/GetPlayBackId';
 import MessageBox from './Stream/MessageBox';
 
-const VideoPlayer = ({ playbackId, AssetId }) => {
+const VideoPlayer = ({ playbackId, AssetId, isStream }) => {
 
 	const [showClipping, setShowClipping] = useState(false);
     const [startTime, setStartTime] = useState(0.0);
@@ -99,17 +99,23 @@ const VideoPlayer = ({ playbackId, AssetId }) => {
 					</div>
 				</>
 			)
-
-		return (
-			<>
-				<Player videoRef={videoRef} />
-				<div className="text-center">
-					<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onClipClick} />
-				</div>
-			</>
-		)
+		if(isStream) {
+			return (
+				<>
+					<Player videoRef={videoRef} />
+				</>
+			)
+		} else {
+			return (
+				<>
+					<Player videoRef={videoRef} />
+					<div className="text-center">
+						<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onClipClick} />
+					</div>
+				</>
+			)
+		}
 	}
-
 }
 
 export default VideoPlayer

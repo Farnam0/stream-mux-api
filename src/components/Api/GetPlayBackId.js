@@ -1,6 +1,6 @@
 import Mux from '@mux/mux-node'
 
-const { Video } = new Mux("4a875045-e081-416d-bfb6-193498df9553", "9s1nVYdsRPapK/J07idbqYhYO3RJ5lDGgtd7fDg/SDY/hEeLaERwH1gw0Qtkg+UMCeAy6r5eXjY");
+const { Video } = new Mux("7a65d1d8-a3ec-46b1-9ee4-c2d88afb4750", "3DioWqu6nFsbuIvKFEugIGzhnq6su76bOZU3/VhGWfIm3M4FvLJOM+cb607kpCqCVnRMdPrYhsD");
 
 async function GetPlayBackId(AssetId)
 {

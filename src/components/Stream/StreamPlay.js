@@ -10,12 +10,13 @@ function StreamPlay({streamKey, playBackId, onButtonClick}) {
         <Container>
             <Row>
                 < MessageBox message={streamKey} />
-                < VideoPlayer playbackId={playBackId} />
-                <div className="text-center">
-                    <Button color="#FE6C59" hoverColor="#F08C99" text={"Load Stream"} onClick={onButtonClick} />
-                </div>
+                < VideoPlayer playbackId={playBackId} isStream={true}/>
             </Row>
         </Container>
+
+        <div className="text-center">
+            <Button color="#FE6C59" hoverColor="#F08C99" text={"Load Stream"} onClick={onButtonClick} />
+        </div>
     </>
     )
 }
