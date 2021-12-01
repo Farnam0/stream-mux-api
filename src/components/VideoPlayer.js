@@ -6,18 +6,36 @@ import React from 'react'
 import Player from './Player';
 import Button from './Button';
 import ClipMenu from './ClipMenu';
+import CreateAClip from './Api/CreateAClip';
+import GetPlayBackId from './Api/GetPlayBackId';
+import MessageBox from './Stream/MessageBox';
 
-
-const VideoPlayer = ({ AssetId, PlaybackId }) => {
+const VideoPlayer = ({ playbackId, AssetId, isStream }) => {
 
 	const [showClipping, setShowClipping] = useState(false);
-	const [startTime, setStartTime] = useState(0.0);
+    const [startTime, setStartTime] = useState(0.0);
     const [endTime, setEndTime] = useState(0.0);
-	const [playBackId, setPlayBackId] = useState(PlaybackId);
-	const [assetId, setAssetId] = useState(AssetId);
+    const [PlaybackId, setPlaybackId] = useState(0);
 
 	const videoRef = useRef(null)
-	const src = 'https://stream.mux.com/' + playBackId + '.m3u8'
+
+	useEffect(() => {
+		if(AssetId)
+		{
+			const result = GetPlayBackId(AssetId);
+			result.then(response => {
+				console.log(response)
+				setPlaybackId(response.playback_ids[0].id)
+			})
+		}
+    }, [AssetId])
+
+	let src
+	if(AssetId)
+		src = 'https://stream.mux.com/' + PlaybackId + '.m3u8'
+	else
+		src = 'https://stream.mux.com/' + playbackId + '.m3u8'
+
 	useEffect(() => {
 		let hls;
 		if (videoRef.current) {
@@ -40,76 +58,64 @@ const VideoPlayer = ({ AssetId, PlaybackId }) => {
 			if (hls) {
 				hls.destroy();
 			}
-		};
-	});
+		}
+	})
 
-	const onButtonClick = () => {
-		setShowClipping(!showClipping)
-	}
-
-	const onStartChange = (event) => {
-        setStartTime(event.target.value);
-        console.log(startTime);
+	const onClipClick = () => {
+        setShowClipping(!showClipping)
     }
 
-    const onEndChange = (event) => {
-        setEndTime(event.target.value);
-        console.log(endTime);
-    }
+	const [newAssetId, setNewAssetId] = useState('');
 
-    // async function SaveClip() {
-    //     return await Video.LiveStreams.create({
-    //         playback_policy: 'public',
-    //         new_asset_settings: { playback_policy: 'public' }
-    //     })
-    // }
+	const OnSaveClip = () => {
+		const result = CreateAClip(AssetId, startTime, endTime);
+		result.then(response => {
+			console.log(response)
+			setNewAssetId(response.id)
+		})
 
-    const saveClip = () => {
-        var reqBody = {
-            method: 'POST',
-            input: [{
-                url: "mux://assets/" + assetId,
-                start_time: startTime,
-                end_time: endTime
-            }],
-            playback_policy: [
-                "public"
-            ]
-        }
-        fetch('https://api.mux.com/video/v1/assets', reqBody)
-            .then(response => response.json())
-            .then(body => setPlayBackId(body.playback_ids[0].id))
-            .catch(err => console.log(err));
-        setShowClipping(true);
+        setShowClipping(!showClipping)
     }
 
 	if (showClipping) {
 		return (
 			<>
-				<>
-					<Player videoRef={videoRef} />
-					<ClipMenu
-						onStartChange={onStartChange}
-						onEndChange={onEndChange}
-						saveClip={saveClip}
-					/>
-				</>
+				<Player videoRef={videoRef} />
+				<ClipMenu
+					onStartChange={(event) => {setStartTime(event.target.value)}}
+					onEndChange={(event) => {setEndTime(event.target.value)}}
+					saveClip={OnSaveClip}
+				/>
 			</>
 		)
 	} else {
-		return (
-			<>
-				<Player videoRef={videoRef} />
-				<div className="text-center">
-					<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onButtonClick} />
-				</div>
-			</>
-		)
+		if(newAssetId)
+			return (
+				<>
+					<MessageBox message={newAssetId} />
+					<Player videoRef={videoRef} />
+					<div className="text-center">
+						<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onClipClick} />
+					</div>
+				</>
+			)
+		if(isStream) {
+			return (
+				<>
+					<Player videoRef={videoRef} />
+				</>
+			)
+		} else {
+			return (
+				<>
+					<Player videoRef={videoRef} />
+					<div className="text-center">
+						<Button color="#FE6C59" hoverColor="#F08C99" text={"Clip"} onClick={onClipClick} />
+					</div>
+				</>
+			)
+		}
 	}
-
 }
 
 export default VideoPlayer
-
-
-
