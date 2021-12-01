@@ -1,8 +1,8 @@
 import { Container } from 'react-bootstrap'
 import { Row } from 'react-bootstrap'
-import MessageBox from './MessageBox';
+import MessageBox from './StreamKey';
 import VideoPlayer from '../VideoPlayer';
-import Button from '../Button'
+import Button from '../Generic/Button'
 
 function StreamPlay({streamKey, playBackId, onButtonClick}) {
     return (
